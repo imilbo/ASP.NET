@@ -1,0 +1,39 @@
+using SecurityWithASPNETWebAPI.Security;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+namespace SecurityWithASPNETWebAPI.Controllers
+{
+    [RoutePrefix("api/mysecurity")]
+    public class MySecurityController : ApiController
+    {
+        [HttpGet]
+        [Route("work1")]
+        [AllowAnonymous]
+        public string work1() {
+            return "work1";
+        }
+        [HttpGet]
+        [Route("work2")]
+        [MyAuthorize(Roles="superadmin")]
+        public string work2() {
+            return "work2";
+        }
+        [HttpGet]
+        [Route("work3")]
+        [MyAuthorize(Roles = "superadmin,admin")]
+        public string work3() {
+            return "work3";
+        }
+        [HttpGet]
+        [Route("work4")]
+        [MyAuthorize(Roles = "superadmin,admin,employee")]
+        public string work4() {
+            return "work4";
+        }
+    }
+}

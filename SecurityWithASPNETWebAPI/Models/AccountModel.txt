@@ -1,0 +1,22 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace SecurityWithASPNETWebAPI.Models {
+    public class AccountModel {
+        private List<Account> listAccount = new List<Account>();
+        public AccountModel() {
+            listAccount.Add(new Account { id = "acc1", password = "123", roles = new string[] { "superadmin", "admin", "employee" } });
+            listAccount.Add(new Account { id = "acc2", password = "123", roles = new string[] { "admin", "admin", } });
+            listAccount.Add(new Account { id = "acc3", password = "123", roles = new string[] {  "employee" } });
+
+        }
+        public Account find(String id) {
+            return listAccount.Single(Account => Account.id.Equals(id));
+        }
+        public Account login(string id, string password) {
+            return listAccount.Where(acc => acc.id.Equals(id) && acc.password.Equals(password)).FirstOrDefault();
+        }
+    }
+}
