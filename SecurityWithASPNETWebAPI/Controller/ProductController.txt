@@ -1,0 +1,48 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using Newtonsoft.Json;
+using ResponseStatusWithASPNETWebAPI.Models;
+
+namespace ResponseStatusWithASPNETWebAPI.Controllers
+{
+    [RoutePrefix("api/product")]
+    public class ProductController : ApiController {
+        private List<Product> products = new List<Product>()
+        {
+            new Product { id =1, name = "T Shirt", price = 25.5M, qty= 5},
+            new Product { id =2, name ="T shirt 2", price = 12.5M, qty = 2 }
+        };
+        [HttpGet]
+        [Route("findall")]
+        public HttpResponseMessage Get() {
+
+            try {
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
+                var products = this.products.ToList();
+                response.Content = new StringContent(JsonConvert.SerializeObject(products));
+                response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                return response;
+            } catch {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                //return new HttpRequestMessage(HttpStatusCode.BadRequest);
+            }
+        }
+
+        [HttpPost]
+        public HttpResponseMessage getAll() {
+
+        }
+
+        public IHttpActionResult Get(int id) {
+            var product = products.Where(x => x.id == id);
+            if(product == null) {
+                return NotFound();
+            }
+            return Ok(product);
+        }
+    }
+}
